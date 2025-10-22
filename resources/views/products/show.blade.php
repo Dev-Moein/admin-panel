@@ -45,12 +45,12 @@
 
         <div class="col-md-3">
             <label class="form-label">تاریخ شروع حراجی</label>
-            <input disabled value="{{ getjalaliDate($product->date_on_sale_from,'Y/m/d H:i') }}"  class="form-control bg-light" />
+            <input disabled value="{{ getJalaliDate($product->date_on_sale_from,true) }}"  class="form-control bg-light" />
         </div>
 
         <div class="col-md-3">
             <label class="form-label">تاریخ پایان حراجی</label>
-            <input disabled value="{{ getjalaliDate($product->date_on_sale_to,'Y/m/d H:i')}}"  class="form-control bg-light" />
+            <input disabled value="{{ getJalaliDate($product->date_on_sale_to,true)}}"  class="form-control bg-light" />
         </div>
 
         <div class="col-md-12">

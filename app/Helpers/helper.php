@@ -1,7 +1,7 @@
 <?php
 
-use Hekmatinasser\Verta\Verta;
 use Carbon\Carbon;
+use Hekmatinasser\Verta\Verta;
 
 /**
  * تبدیل رشته به slug مناسب
@@ -15,17 +15,64 @@ if (!function_exists('make_slug')) {
     }
 }
 
-function getMiladiDate($date)
-{
-    return Verta::parse($date)->formatGregorian('Y-n-j H:i:s');
+/**
+ * تبدیل تاریخ میلادی به تاریخ شمسی (Jalali)
+ *
+ * @param string|Carbon $date
+ * @param bool $withTime نمایش ساعت هم اضافه شود؟
+ * @return string
+ */
+if (!function_exists('getJalaliDate')) {
+    function getJalaliDate($date, $withTime = false)
+    {
+        if (is_null($date)) {
+            return '';
+        }
+
+        if (!($date instanceof Carbon)) {
+            $date = Carbon::parse($date);
+        }
+
+        $v = new Verta($date);
+
+        return $withTime ? $v->format('Y/m/d H:i:s') : $v->format('Y/m/d');
+    }
 }
 
-function getjalaliDate($date)
-{
-    if (is_null($date)) {
-        return ''; // یا null، ولی برای فرم Blade بهتره ''
-    }
+/**
+ * تبدیل تاریخ شمسی به تاریخ میلادی برای ذخیره در دیتابیس
+ *
+ * @param string $jalaliDate مثال: 1404/07/30 15:30:00 یا 1404/07/30
+ * @return string فرمت Y-m-d H:i:s
+ */
+if (!function_exists('jalaliToGregorian')) {
+    function jalaliToGregorian($jalaliDate)
+    {
+        if (!$jalaliDate) {
+            return null;
+        }
 
-    // ادامه تبدیل به تاریخ جلالی
-    return Verta::parse($date)->format('Y/m/d'); // مثال
+        $v = Verta::parse($jalaliDate); // Verta خودش تاریخ شمسی رو می‌فهمه
+        $carbon = Carbon::create($v->year, $v->month, $v->day, $v->hour, $v->minute, $v->second);
+
+        return $carbon->format('Y-m-d H:i:s');
+    }
+}
+
+/**
+ * مثال کوتاه تبدیل به میلادی با ساعت جاری
+ */
+if (!function_exists('getMiladiDate')) {
+    function getMiladiDate($date)
+    {
+        if (!$date) {
+            return null;
+        }
+
+        if (!($date instanceof Carbon)) {
+            $date = Carbon::parse($date);
+        }
+
+        return Verta::parse($date)->formatGregorian('Y-m-d H:i:s');
+    }
 }

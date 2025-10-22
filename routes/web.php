@@ -3,6 +3,7 @@
 use App\Http\Controllers\AboutUsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\HomeController;
@@ -59,4 +60,12 @@ Route::group(['prefix' => 'products'],function(){
     Route::get('/{product}/edit',[ProductController::class,'edit'])->name('product.edit');
     Route::put('/{product}',[ProductController::class,'update'])->name('product.update');
     Route::delete('/{product}',[ProductController::class,'destroy'])->name('product.destroy');
+});
+Route::group(['prefix' => 'coupons'],function(){
+    Route::get('/',[CouponController::class,'index'])->name('coupon.index');
+    Route::get('/create',[CouponController::class,'create'])->name('coupon.create');
+    Route::post('/',[CouponController::class,'store'])->name('coupon.store');
+    Route::get('/{coupon}/edit',[CouponController::class,'edit'])->name('coupon.edit');
+    Route::put('/{coupon}',[CouponController::class,'update'])->name('coupon.update');
+    Route::delete('/{coupon}',[CouponController::class,'destroy'])->name('coupon.destroy');
 });

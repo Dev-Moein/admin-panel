@@ -131,7 +131,7 @@
 
         <div class="col-md-3">
             <label class="form-label">تاریخ شروع حراجی</label>
-            <input data-jdp name="date_on_sale_from" type="text" value="{{ getjalaliDate($product->date_on_sale_from) }}" class="form-control" />
+            <input data-jdp name="date_on_sale_from" type="text" value="{{ getJalaliDate($product->date_on_sale_from,true) }}" class="form-control" />
             <div class="form-text text-danger">
                 @error('date_on_sale_from')
                     {{ $message }}
@@ -141,7 +141,7 @@
 
         <div class="col-md-3">
             <label class="form-label">تاریخ پایان حراجی</label>
-            <input data-jdp name="date_on_sale_to" type="text" value="{{ getjalaliDate($product->date_on_sale_to) }}" class="form-control" />
+            <input data-jdp name="date_on_sale_to" type="text" value="{{ getJalaliDate($product->date_on_sale_to,true) }}" class="form-control" />
             <div class="form-text text-danger">
                 @error('date_on_sale_to')
                     {{ $message }}
