@@ -7,8 +7,10 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SliderController;
+use App\Http\Controllers\TransActionsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[HomeController::class,'index'])->name('dashbord');
@@ -69,3 +71,8 @@ Route::group(['prefix' => 'coupons'],function(){
     Route::put('/{coupon}',[CouponController::class,'update'])->name('coupon.update');
     Route::delete('/{coupon}',[CouponController::class,'destroy'])->name('coupon.destroy');
 });
+Route::get('/orders',[OrderController::class,'index'])->name('order.index');
+Route::get('/orders/{order}',[OrderController::class,'edit'])->name('order.edit');
+
+Route::get('/transactions',[TransActionsController::class,'index'])->name('transaction.index');
+Route::get('/transactions/{transactions}',[TransActionsController::class,'edit'])->name('transaction.edit');
