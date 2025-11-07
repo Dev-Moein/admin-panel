@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutUsController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\CouponController;
@@ -9,11 +10,13 @@ use App\Http\Controllers\FooterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\TransActionsController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/',[HomeController::class,'index'])->name('dashbord');
+Route::middleware('auth')->group(function(){
+Route::get('/',[HomeController::class,'index'])->name('dashboard');
 
 Route::group(['prefix' => 'sliders'],function(){
     Route::get('/',[SliderController::class,'index'])->name('slider.index');
@@ -54,7 +57,7 @@ Route::group(['prefix' => 'categories'],function(){
     Route::put('/{category}',[CategoryController::class,'update'])->name('category.update');
     Route::delete('/{category}',[CategoryController::class,'destroy'])->name('category.destroy');
 });
-Route::group(['prefix' => 'products'],function(){
+Route::group(['prefix' => 'products', 'middleware' => 'can:admin'],function(){
     Route::get('/',[ProductController::class,'index'])->name('product.index');
     Route::get('/create',[ProductController::class,'create'])->name('product.create');
     Route::get('/{product}',[ProductController::class,'show'])->name('product.show');
@@ -76,3 +79,22 @@ Route::get('/orders/{order}',[OrderController::class,'edit'])->name('order.edit'
 
 Route::get('/transactions',[TransActionsController::class,'index'])->name('transaction.index');
 Route::get('/transactions/{transactions}',[TransActionsController::class,'edit'])->name('transaction.edit');
+
+Route::group(['prefix' => 'users', 'middleware' => 'can:admin'],function(){
+    Route::get('/',[UserController::class,'index'])->name('user.index');
+    Route::get('/create',[UserController::class,'create'])->name('user.create');
+    Route::post('/',[UserController::class,'store'])->name('user.store');
+    Route::get('/{user}/edit',[UserController::class,'edit'])->name('user.edit');
+    Route::put('/{user}',[UserController::class,'update'])->name('user.update');
+});
+Route::group(['prefix' => 'roles', 'middleware' => 'can:admin'],function(){
+    Route::get('/',[RoleController::class,'index'])->name('role.index');
+    Route::get('/create',[RoleController::class,'create'])->name('role.create');
+    Route::post('/',[RoleController::class,'store'])->name('role.store');
+    Route::get('/{role}/edit',[RoleController::class,'edit'])->name('role.edit');
+    Route::put('/{role}',[RoleController::class,'update'])->name('role.update');
+});
+Route::get('/logout',[AuthController::class,'logout'])->name('auth.logout');
+});
+Route::get('/login',[AuthController::class,'loginForm'])->name('auth.login.form');
+Route::post('/login',[AuthController::class,'login'])->name('auth.login');

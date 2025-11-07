@@ -3,14 +3,14 @@
          <ul class="nav flex-column">
              <li class="nav-item">
                  <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" aria-current="page"
-                     href="{{ route('dashbord') }}">
+                     href="{{ route('dashboard') }}">
                      <i class="bi bi-grid me-2"></i>
                      داشبورد
                  </a>
              </li>
-
+              @can('admin')
              <li class="nav-item">
-                 <a class="nav-link" href="#">
+                 <a class="nav-link {{ request()->is('users*') ? 'active' : '' }}" href="{{route('user.index')}}">
                      <i class="bi bi-people me-2"></i>
                      کاربران
                  </a>
@@ -27,6 +27,7 @@
                      دسته بندی
                  </a>
              </li>
+             @endcan
              <li class="nav-item">
                  <a class="nav-link {{ request()->is('orders*') ? 'active' : '' }}" href="{{route('order.index')}}">
                      <i class="bi bi-basket me-2"></i>
